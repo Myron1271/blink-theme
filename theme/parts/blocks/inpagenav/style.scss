@@ -1,0 +1,110 @@
+@use "../../../css/variables" as *;
+
+body:not(.wp-admin) {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 2;
+  width: 100vw;
+  left: 0;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background-color: $color-white;
+}
+
+#onpage-nav {
+  display: flex;
+  justify-content: center;
+  background-color: $color-white;
+  padding: 0;
+
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: unset;
+    width: auto;
+
+    .dropdown-item {
+      padding: .5rem .25rem;
+      color: $color-black;
+
+      &:hover, &.active  {
+        background: $color-white;
+        color: $color-black;
+      }
+    }
+  }
+
+  .nav-item {
+    &:first-child {
+      .nav-link {
+        background: none;
+      }
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 25px 30px;
+      border-radius: 0;
+      opacity: 1;
+      font-size: 1.2rem;
+      color: $color-black!important;
+      z-index: 1;
+      text-decoration: none;
+      background: $color-black;
+      background-size: 1px 60%;
+      background-position: 0% 50%;
+      background-repeat: no-repeat;
+      transition: .1s ease-in-out;
+
+      //@media screen and (max-width: $lg) {
+      //  overflow: auto;
+      //  overflow-y: hidden;
+      //}
+
+      &:not(:first-child):before {
+        border-left: 1px solid $color-black;
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 0;
+        content: '';
+      }
+
+      &:hover {
+        color: $color-white!important;
+        background: $color-black;
+
+        &:before {
+          content: unset;
+        }
+      }
+
+      &.active {
+        text-decoration: none;
+        color: $color-white!important;
+        background: $color-black;
+        z-index: 2;
+
+        &:before {
+          content: unset;
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border: 15px solid transparent;
+          border-top-color: $color-black;
+          border-bottom: 0;
+          margin-left: -15px;
+          margin-bottom: -15px;
+        }
+      }
+    }
+  }
+}

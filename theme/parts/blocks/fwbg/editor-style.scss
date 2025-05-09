@@ -1,0 +1,15 @@
+@use "../../../css/variables" as *;
+
+@for $i from 1 through length($color-names) {
+  .bg--#{nth($color-names, $i)} {
+    background: nth($colors, $i);
+  }
+
+  .color--#{nth($color-names, $i)} {
+    color: nth($colors, $i);
+
+    & > * {
+      color: nth($colors, $i) !important;
+    }
+  }
+}

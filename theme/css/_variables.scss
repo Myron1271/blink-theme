@@ -1,0 +1,37 @@
+@use "sass:math";
+
+//Bootstrap overrides
+$spacer: 1rem;
+$spacers: (
+        0: 0,
+        1: math.div($spacer, 4),
+        2: math.div($spacer, 2),
+        3: $spacer,
+        4: $spacer * 1.5,
+        45: $spacer * 2.25,
+        5: $spacer * 3,
+        6: $spacer * 4,
+);
+
+// Breakpoints
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1450px;
+
+// Colors
+$color-white: #ffffff;
+$color-black: #373737;
+$color-lightgray: #F5F5F5;
+
+$colors: $color-white, $color-black, $color-lightgray;
+$color-names: 'white', 'black', 'lightgray';
+
+// Transition
+@mixin fade($delay: 0.2s) {
+  -webkit-transition: all $delay ease-in-out;
+  -moz-transition: all $delay ease-in-out;
+  -o-transition: all $delay ease-in-out;
+  transition: all $delay ease-in-out;
+}

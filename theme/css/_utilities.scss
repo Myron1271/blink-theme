@@ -1,0 +1,75 @@
+@use "variables" as *;
+
+/*  Footer altijd aan onderkant van pagina  */
+body {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  &.no-scroll {
+    max-height: 100vw;
+    position:relative;
+    overflow:hidden;
+    touch-action: none;
+    -ms-touch-action: none;
+  }
+}
+
+body, html {
+  min-height: 100vh;
+}
+
+main {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+/*  Full Width  */
+.alignwide {
+  margin-left: -80px;
+  margin-right: -80px;
+}
+
+.alignfull {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.alignfull img {
+  width: 100vw;
+}
+
+/* Equal height cols voor ghostkit */
+.equal-height-columns {
+  .ghostkit-col-content {
+    height: 100%;
+  }
+}
+
+/*  Geen margin-bottom op blocks  */
+.wp-block-columns {
+  margin-bottom: 0;
+}
+
+@for $i from 1 through length($color-names) {
+  .bg--#{nth($color-names, $i)} {
+    background: nth($colors, $i);
+  }
+
+  .color--#{nth($color-names, $i)} {
+    color: nth($colors, $i);
+
+    & > * {
+      color: nth($colors, $i) !important;
+    }
+  }
+}

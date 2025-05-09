@@ -1,0 +1,23 @@
+{
+  "name": "eye/fwbg",
+  "title": "Volledige schermbreedte rij",
+  "description": "Rij die volledige schermbreedte gebruikt",
+  "style": [ "file:./style.css" ],
+  "editorStyle": [ "file:./editor-style.css" ],
+  "category": "blink",
+  "icon": "align-wide",
+  "supports": {
+    "align": [ "full" ]
+  },
+  "attributes": {
+    "align": {
+        "type": "string",
+        "default": "full"
+    }
+  },
+  "keywords": ["full", "width", "background", "achtergrond"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "template.php"
+  }
+}

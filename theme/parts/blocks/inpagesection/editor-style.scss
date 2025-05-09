@@ -1,0 +1,11 @@
+.menu-section {
+  opacity: .7;
+  display: block;
+
+  &::after {
+    display: block;
+    text-align: center;
+    content: "On-page menusectie: " attr(data-section-name);
+    color: #9a9a9a;
+  }
+}

@@ -1,0 +1,25 @@
+.eye-block.empty-space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    display: block;
+    content: 'LEGE RUIMTE';
+    font-size: 1rem;
+    opacity: .5;
+    text-align: center;
+  }
+
+  &.empty-space--small {
+    height: 32px;
+  }
+
+  &.empty-space--medium {
+    height: 48px;
+  }
+
+  &.empty-space--large {
+    height: 96px;
+  }
+}

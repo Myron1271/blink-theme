@@ -1,0 +1,22 @@
+{
+  "name": "eyetractive/blink-theme",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Eyetractive\\BlinkTheme\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Eyetractive",
+      "email": "eyetractive@eyetractive.nl"
+    }
+  ],
+  "require": {
+    "laravel/prompts": "^0.3.5",
+    "symfony/filesystem": "^7.2"
+  },
+  "scripts": {
+    "install-blink": "Eyetractive\\BlinkTheme\\ThemeInstall::install"
+  }
+}

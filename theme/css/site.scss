@@ -1,0 +1,11 @@
+@use "variables" as *;
+@use "utilities" as *;
+//@use "fonts" as *;
+@import "./bootstrap/bootstrap";
+
+/**
+
+    Globale styles mogen hier komen.
+    Block-specifieke styling mag in de .scss van dat block (om zo veel mogelijk unused css te voorkomen)
+
+ */

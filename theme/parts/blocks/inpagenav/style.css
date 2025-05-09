@@ -1,0 +1,90 @@
+body:not(.wp-admin) {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 2;
+  width: 100vw;
+  left: 0;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background-color: #ffffff;
+}
+
+#onpage-nav {
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 0;
+}
+#onpage-nav .dropdown-menu {
+  right: 0;
+  left: auto;
+  min-width: unset;
+  width: auto;
+}
+#onpage-nav .dropdown-menu .dropdown-item {
+  padding: 0.5rem 0.25rem;
+  color: #373737;
+}
+#onpage-nav .dropdown-menu .dropdown-item:hover, #onpage-nav .dropdown-menu .dropdown-item.active {
+  background: #ffffff;
+  color: #373737;
+}
+#onpage-nav .nav-item:first-child .nav-link {
+  background: none;
+}
+#onpage-nav .nav-item .nav-link {
+  position: relative;
+  padding: 25px 30px;
+  border-radius: 0;
+  opacity: 1;
+  font-size: 1.2rem;
+  color: #373737 !important;
+  z-index: 1;
+  text-decoration: none;
+  background: #373737;
+  background-size: 1px 60%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  transition: 0.1s ease-in-out;
+}
+#onpage-nav .nav-item .nav-link:not(:first-child):before {
+  border-left: 1px solid #373737;
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 0;
+  content: "";
+}
+#onpage-nav .nav-item .nav-link:hover {
+  color: #ffffff !important;
+  background: #373737;
+}
+#onpage-nav .nav-item .nav-link:hover:before {
+  content: unset;
+}
+#onpage-nav .nav-item .nav-link.active {
+  text-decoration: none;
+  color: #ffffff !important;
+  background: #373737;
+  z-index: 2;
+}
+#onpage-nav .nav-item .nav-link.active:before {
+  content: unset;
+}
+#onpage-nav .nav-item .nav-link.active:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 15px solid transparent;
+  border-top-color: #373737;
+  border-bottom: 0;
+  margin-left: -15px;
+  margin-bottom: -15px;
+}
+
+/*# sourceMappingURL=style.css.map */

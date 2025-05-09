@@ -1,0 +1,12 @@
+@media screen and (min-width: 992px) {
+  body:not(.wp-admin) .fullwidth-row {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

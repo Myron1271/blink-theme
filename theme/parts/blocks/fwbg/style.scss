@@ -1,0 +1,14 @@
+@use "../../../css/variables" as *;
+
+body:not(.wp-admin) {
+  .fullwidth-row {
+    @media screen and (min-width: $lg) {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+    }
+  }
+}

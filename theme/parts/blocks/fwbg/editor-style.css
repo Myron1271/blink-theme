@@ -1,0 +1,34 @@
+.bg--white {
+  background: #ffffff;
+}
+
+.color--white {
+  color: #ffffff;
+}
+.color--white > * {
+  color: #ffffff !important;
+}
+
+.bg--black {
+  background: #373737;
+}
+
+.color--black {
+  color: #373737;
+}
+.color--black > * {
+  color: #373737 !important;
+}
+
+.bg--lightgray {
+  background: #F5F5F5;
+}
+
+.color--lightgray {
+  color: #F5F5F5;
+}
+.color--lightgray > * {
+  color: #F5F5F5 !important;
+}
+
+/*# sourceMappingURL=editor-style.css.map */
