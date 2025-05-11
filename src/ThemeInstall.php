@@ -309,7 +309,7 @@ class ThemeInstall
         $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . "theme";
         clear();
 
-        info("Welcome to the blink-theme installer!");
+        info("Welcome bij de Blink Installer!");
 
         // Stap 1 – KOPIEER CORE THEME NAAR blink map
         $baseThemePath = getcwd() . "/wp-content/themes/blink";
@@ -356,7 +356,7 @@ class ThemeInstall
 
                 info("style.css en functions.php gegenereerd.");
             } else {
-                info("Child theme '$childThemePath' bestaat al — bestanden worden niet overschreven.");
+                info("Child theme '$childThemePath' bestaat al, bestanden worden niet overschreven.");
             }
         }
 
@@ -376,7 +376,7 @@ class ThemeInstall
             $destPath = $destination . DIRECTORY_SEPARATOR . $file;
 
             if (is_dir($srcPath)) {
-                self::recursiveCop
+                self::recursiveCopy
                 ($srcPath, $destPath);
                 continue;
             }
