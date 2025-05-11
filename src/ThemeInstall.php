@@ -369,7 +369,7 @@ class ThemeInstall
                 file_put_contents($childThemePath . "/style.css", $styleBase . "\n");
                 file_put_contents($childThemePath . "/functions.php", $functionBase);
 
-                info("style.css en functions.php gegenereerd.");
+                warning("style.css en functions.php gegenereerd.");
             } else {
                 info("Child theme '$childThemePath' bestaat al.");
             }
