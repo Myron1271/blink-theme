@@ -368,6 +368,8 @@ class ThemeInstall
         if (!file_exists($source)) return false;
         if (!file_exists($destination)) mkdir($destination, 0755, true);
 
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+
         $files = scandir($source);
         foreach ($files as $file) {
             if ($file === "." || $file === "..") continue;
@@ -376,33 +378,44 @@ class ThemeInstall
             $destPath = $destination . DIRECTORY_SEPARATOR . $file;
 
             if (is_dir($srcPath)) {
-                self::recursiveCopy
-                ($srcPath, $destPath);
+                self::recursiveCopy($srcPath, $destPath);
                 continue;
             }
 
-            // Check of bestand bestaat én gewijzigd is
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
                 echo "Bestand bestaat en is aangepast: $destPath\n";
-                echo "Overschrijven? (Ja(j)/Nee(n)): ";
-                $overwrite = strtolower(trim(readline()));
-                if ($overwrite !== "j" || $overwrite !== "ja") {
+
+                if ($isWindows) {
+                    echo "Overschrijven? Ja/Nee: ";
+                    $overwrite = strtolower(trim(readline()));
+                } else {
+                    $overwrite = confirm("Overschrijven?", default: false, yes: "Ja", no: "Nee");
+                }
+
+                if (
+                    ($isWindows && !in_array($overwrite, ["j", "ja", "y", "yes"])) || (!$isWindows && !$overwrite)
+                ) {
                     echo "Bestand overgeslagen: $file\n";
                     continue;
                 }
 
-                echo "Weet je het echt zeker dat je '$file' wilt overschrijven? (Ja(j)/Nee(n)): ";
-                $doubleCheck = strtolower(trim(readline()));
-                if ($doubleCheck !== "ja" || $doubleCheck !== "ja") {
+                if ($isWindows) {
+                    echo "Weet je het echt zeker dat je '$file' wilt overschrijven? Ja/Nee: ";
+                    $doubleCheck = strtolower(trim(readline()));
+                } else {
+                    $doubleCheck = confirm("Weet je het echt zeker dat je '$file' wilt overschrijven?", default: false, yes: "Ja", no: "Nee");
+                }
+
+                if (
+                    ($isWindows && !in_array($doubleCheck, ["j", "ja", "y", "yes"])) || (!$isWindows && !$doubleCheck)
+                ) {
                     echo "Bestand overgeslagen: $file\n";
                     continue;
                 }
             }
-
             copy($srcPath, $destPath);
             echo "Bestand gekopieerd: $file\n";
         }
-
         return true;
     }
 }
