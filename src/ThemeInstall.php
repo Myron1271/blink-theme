@@ -323,7 +323,7 @@ class ThemeInstall
         if ($isWindows) {
             echo "Wil je een child theme aanmaken? Ja/Nee: ";
             $input = strtolower(trim(readline()));
-            $createChild = $input === "j" || $input === "ja";
+            $createChild = in_array($input, ["j", "ja", "y", "yes"]);
         } else {
             $createChild = confirm("Wil je een child theme aanmaken?", default: false, yes: "Ja", no: "Nee");
         }
