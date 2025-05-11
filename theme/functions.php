@@ -217,7 +217,6 @@ include(get_template_directory() . '/includes/utilities.php');
 include(get_template_directory() . '/parts/blocks/blocks.php');
 
 // OLD CODE
-include(get_stylesheet_directory() . '/includes/widget-areas.php');
-include(get_stylesheet_directory() . '/includes/utilities.php');
-
-include(get_stylesheet_directory() . '/parts/blocks/blocks.php');
+//include(get_stylesheet_directory() . '/includes/widget-areas.php');
+//include(get_stylesheet_directory() . '/includes/utilities.php');
+//include(get_stylesheet_directory() . '/parts/blocks/blocks.php');
