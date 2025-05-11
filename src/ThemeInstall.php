@@ -298,6 +298,8 @@ require "vendor/autoload.php";
 
 use Symfony\Component\Filesystem\Filesystem;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\warning;
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\clear;
@@ -307,23 +309,19 @@ class ThemeInstall
     public static function install()
     {
         $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . "theme";
-        clear();
 
-        info("Welcome bij de Blink Installer!");
+        info("Welkom bij de Blink Installer!");
 
-        // Stap 1 – KOPIEER CORE THEME NAAR blink map
         $baseThemePath = getcwd() . "/wp-content/themes/blink";
 
         info("Blink (parent theme) wordt geplaatst in: $baseThemePath");
         self::recursiveCopy($dir, $baseThemePath);
-        info("Blink theme installatie voltooid.\n");
+        info("\n Blink (Parent) Thema installatie voltooid.");
 
-        // Detecteer het besturingssysteem
         $isWindows = defined("PHP_OS_FAMILY") ? PHP_OS_FAMILY === "Windows" : strtoupper(substr(PHP_OS, 0, 3)) === "WIN";
 
-        // Stap 2 – VRAAG OF EEN CHILD THEME AANGEMAAKT MOET WORDEN
         if ($isWindows) {
-            echo "Wil je een child theme aanmaken? (Ja(j)/Nee(n)): ";
+            echo "Wil je een child theme aanmaken? Ja/Nee: ";
             $input = strtolower(trim(readline()));
             $createChild = $input === "j" || $input === "ja";
         } else {
@@ -332,7 +330,7 @@ class ThemeInstall
 
         if ($createChild) {
             if ($isWindows) {
-                echo "Wat is de naam van de website, waarvoor we een Child Theme zullen ontwikkelen?: ";
+                echo "Wat is de naam van het Child Theme?: ";
                 $siteName = trim(readline());
                 while ($siteName === "") {
                     echo "Voer een geldige naam in: ";
@@ -340,7 +338,7 @@ class ThemeInstall
                 }
             } else {
                 $siteName = text(
-                    label: "Wat is de naam van de website, waarvoor we een Child Theme zullen ontwikkelen?",
+                    label: "Wat is de naam van het Child Theme?: ",
                     validate: fn(string $value) => trim($value) !== "" ? null : "Voer een geldige naam in."
                 );
             }
@@ -351,16 +349,33 @@ class ThemeInstall
                 mkdir($childThemePath, 0755, true);
                 info("Child theme aangemaakt in: $childThemePath");
 
-                file_put_contents($childThemePath . "/style.css", "");
-                file_put_contents($childThemePath . "/functions.php", "");
+                $styleBase = <<<CSS
+                /*
+                Theme Name: {$siteName}
+                Description: Child theme van Blink voor {$siteName}.
+                Template: blink
+                Version: 1.0.0
+                */
+                CSS;
+
+                $functionBase = <<<PHP
+                <?php 
+                add_action('wp_enqueue_scripts', function () {
+                wp_enqueue_style('blink-style', get_template_directory_uri() . '/style.css');
+                wp_enqueue_style('child-style', get_stylesheet_uri(), ['blink-style']);
+                });
+                PHP;
+
+                file_put_contents($childThemePath . "/style.css", $styleBase . "\n");
+                file_put_contents($childThemePath . "/functions.php", $functionBase);
 
                 info("style.css en functions.php gegenereerd.");
             } else {
-                info("Child theme '$childThemePath' bestaat al, bestanden worden niet overschreven.");
+                info("Child theme '$childThemePath' bestaat al.");
             }
         }
 
-        info("Installatie volledig afgerond.");
+        info("\n Installatie volledig afgerond!");
     }
 
     private static function recursiveCopy($source, $destination)
@@ -383,7 +398,7 @@ class ThemeInstall
             }
 
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
-                echo "Bestand bestaat en is aangepast: $destPath\n";
+                warning("\n Er is een bestand gevonden die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie overschrijven met de opgehaalde versie?: \n $destPath");
 
                 if ($isWindows) {
                     echo "Overschrijven? Ja/Nee: ";
