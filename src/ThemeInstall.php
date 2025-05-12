@@ -493,7 +493,7 @@ class ThemeInstall
             }
 
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
-                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n $destPath");
+                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n $destPath");
 
                 if ($isWindows) {
                     echo "$yellowForeColor$boldText Overschrijven?$reset Ja/Nee: ";
@@ -513,11 +513,11 @@ class ThemeInstall
                 }
 
                 if ($isWindows) {
-                    echo "$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset Ja/Nee: ";
+                    echo "$reset$redForeColor$boldText Weet je het echt zeker dat je $reset$yellowForeColor$boldText$italicText($file)$reset$redForeColor$boldText wilt overschrijven?$reset Ja/Nee: ";
                     $doubleCheck = strtolower(trim(readline()));
                     echo "\n";
                 } else {
-                    $doubleCheck = confirm("$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
+                    $doubleCheck = confirm("$reset$redForeColor$boldText Weet je het echt zeker dat je $reset$yellowForeColor$boldText$italicText($file)$reset$redForeColor$boldText wilt overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
                 }
 
                 if (
