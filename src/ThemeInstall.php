@@ -298,11 +298,14 @@ require "vendor/autoload.php";
 
 use Symfony\Component\Filesystem\Filesystem;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\comment;
 use function Laravel\Prompts\warning;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\clear;
+
+
 
 class ThemeInstall
 {
@@ -310,13 +313,57 @@ class ThemeInstall
     {
         $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . "theme";
 
-        info("Welkom bij de Blink Installer!");
+        $boldText = "\033[1m";
+        $italicText = "\033[3m";
+        $underlineText = "\033[4m";
+
+        $reset = "\033[0m";
+        $blackForeColor = "\033[30m";
+        $redForeColor = "\033[38;2;255;0;0m";
+        $greenForeColor = "\033[32m";
+        $yellowForeColor = "\033[38;2;255;255;0m";
+        $blueForeColor = "\033[38;2;0;120;255m";
+        $magentaForeColor = "\033[35m";
+        $cyanForeColor = "\033[38;2;0;255;255m";
+
+        $whiteBackColor = "\033[48;5;15m";
+        $redBackColor = "\033[41m";
+        $greenBackColor = "\033[42m";
+        $yellowBackColor = "\033[48;2;255;255;0m";
+        $blueBackColor = "\033[44m";
+        $magentaBackColor = "\033[45m";
+        $cyanBackColor = "\033[46m";
+
+        echo "\n";
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
+        echo "$boldText Welkom bij de Blink Installer! $reset \n";
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
 
         $baseThemePath = getcwd() . "/wp-content/themes/blink";
 
-        info("Blink (parent theme) wordt geplaatst in: $baseThemePath");
+        info("$yellowForeColor$boldText Blink (parent) thema wordt geplaatst in:$reset \n$baseThemePath");
+        info("$reset De installatie zal automatisch beginnen over$yellowForeColor$boldText 5 seconden $reset, druk op$boldText$blueForeColor $whiteBackColor ENTER $reset om meteen te starten");
+        stream_set_blocking(STDIN, false);
+
+        for ($i = 5; $i > 0; $i--) {
+            echo "$greenBackColor$blackForeColor$boldText $i... $reset";
+            sleep(1);
+
+            $input = fgets(STDIN);
+            if ($input !== false) {
+                break;
+            }
+        }
+
+        stream_set_blocking(STDIN, true);
+        echo "\n";
+
         self::recursiveCopy($dir, $baseThemePath);
-        info("\n Blink (Parent) Thema installatie voltooid.");
+        echo "\n";
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
+        echo("$boldText Blink (Parent) Thema installatie voltooid!\n");
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
+        echo "\n";
 
         $isWindows = defined("PHP_OS_FAMILY") ? PHP_OS_FAMILY === "Windows" : strtoupper(substr(PHP_OS, 0, 3)) === "WIN";
 
@@ -325,29 +372,49 @@ class ThemeInstall
             $input = strtolower(trim(readline()));
             $createChild = in_array($input, ["j", "ja", "y", "yes"]);
         } else {
-            $createChild = confirm("Wil je een child theme aanmaken?", default: false, yes: "Ja", no: "Nee");
+            $createChild = confirm("$reset$boldText$cyanForeColor Wil je een child theme aanmaken?$reset", default: false, yes: "Ja", no: "Nee");
         }
 
         if ($createChild) {
-            if ($isWindows) {
-                echo "Wat is de naam van het Child Theme?: ";
-                $siteName = trim(readline());
-                while ($siteName === "") {
-                    echo "Voer een geldige naam in: ";
+            $siteName = "";
+
+            do {
+                if ($isWindows) {
+                    echo "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset om te annuleren): $reset";
                     $siteName = trim(readline());
+
+                    if (strtolower($siteName) === 'cancel') {
+                        info("$reset$redBackColor$boldText Aanmaak van het child theme geannuleerd!$reset");
+                        $siteName = null;
+                        break;
+                    }
+                } else {
+                    $siteName = text(
+                        label: "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset$cyanForeColor om te stoppen): $reset",
+                        validate: function (string $value) {
+                            return trim($value) !== "" ? null : "Voer een geldige naam in.";
+                        }
+                    );
+
+                    if (strtolower($siteName) === 'cancel') {
+                        info("$reset$redBackColor$boldText Aanmaak van het child theme geannuleerd!$reset");
+                        $siteName = null;
+                        break;
+                    }
                 }
-            } else {
-                $siteName = text(
-                    label: "Wat is de naam van het Child Theme?: ",
-                    validate: fn(string $value) => trim($value) !== "" ? null : "Voer een geldige naam in."
-                );
-            }
 
-            $childThemePath = getcwd() . "/wp-content/themes/" . strtolower($siteName);
+                $childThemePath = getcwd() . "/wp-content/themes/" . strtolower($siteName);
 
-            if (!is_dir($childThemePath)) {
+                if (is_dir($childThemePath)) {
+                    warning("$yellowForeColor$boldText Een child theme met die naam bestaat al: $reset$childThemePath");
+                    $siteName = "";
+                }
+
+            } while ($siteName === "" || is_dir($childThemePath));
+
+            if (!is_null($siteName)) {
                 mkdir($childThemePath, 0755, true);
-                info("Child theme aangemaakt in: $childThemePath");
+                info("$greenForeColor$boldText Child Thema is aangemaakt!: $reset$childThemePath");
 
                 $styleBase = <<<CSS
                 /*
@@ -361,25 +428,53 @@ class ThemeInstall
                 $functionBase = <<<PHP
                 <?php 
                 add_action('wp_enqueue_scripts', function () {
-                wp_enqueue_style('blink-style', get_template_directory_uri() . '/style.css');
-                wp_enqueue_style('child-style', get_stylesheet_uri(), ['blink-style']);
+                    wp_enqueue_style('blink-style', get_template_directory_uri() . '/style.css');
+                    wp_enqueue_style('child-style', get_stylesheet_uri(), ['blink-style']);
                 });
                 PHP;
 
                 file_put_contents($childThemePath . "/style.css", $styleBase . "\n");
                 file_put_contents($childThemePath . "/functions.php", $functionBase);
-
-                warning("style.css en functions.php gegenereerd.");
-            } else {
-                info("Child theme '$childThemePath' bestaat al.");
             }
+
+        }
+        else {
+            echo "$reset$redBackColor$boldText Child Thema Installatie overgeslagen $reset\n";
+            echo "\n";
         }
 
-        info("\n Installatie volledig afgerond!");
+
+
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
+        echo("$boldText Installatie volledig afgerond!\n");
+        echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
+        echo "\n";
     }
 
     private static function recursiveCopy($source, $destination)
     {
+
+        $boldText = "\033[1m";
+        $italicText = "\033[3m";
+        $underlineText = "\033[4m";
+
+        $reset = "\033[0m";
+        $blackForeColor = "\033[30m";
+        $redForeColor = "\033[31m";
+        $greenForeColor = "\033[32m";
+        $yellowForeColor = "\033[38;2;255;255;0m";
+        $blueForeColor = "\033[38;2;0;120;255m";
+        $magentaForeColor = "\033[35m";
+        $cyanForeColor = "\033[36m";
+
+        $whiteBackColor = "\033[48;5;15m";
+        $redBackColor = "\033[41m";
+        $greenBackColor = "\033[42m";
+        $yellowBackColor = "\033[48;2;255;255;0m";
+        $blueBackColor = "\033[44m";
+        $magentaBackColor = "\033[45m";
+        $cyanBackColor = "\033[46m";
+
         if (!file_exists($source)) return false;
         if (!file_exists($destination)) mkdir($destination, 0755, true);
 
@@ -398,13 +493,13 @@ class ThemeInstall
             }
 
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
-                warning("\n Er is een bestand gevonden die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie overschrijven met de opgehaalde versie?: \n $destPath");
+                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie overschrijven met de opgehaalde versie?: $reset\n $destPath");
 
                 if ($isWindows) {
                     echo "Overschrijven? Ja/Nee: ";
                     $overwrite = strtolower(trim(readline()));
                 } else {
-                    $overwrite = confirm("Overschrijven?", default: false, yes: "Ja", no: "Nee");
+                    $overwrite = confirm("$yellowForeColor$boldText Overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
                 }
 
                 if (
@@ -415,21 +510,23 @@ class ThemeInstall
                 }
 
                 if ($isWindows) {
-                    echo "Weet je het echt zeker dat je '$file' wilt overschrijven? Ja/Nee: ";
+                    echo "$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset Ja/Nee: ";
                     $doubleCheck = strtolower(trim(readline()));
                 } else {
-                    $doubleCheck = confirm("Weet je het echt zeker dat je '$file' wilt overschrijven?", default: false, yes: "Ja", no: "Nee");
+                    $doubleCheck = confirm("$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
                 }
 
                 if (
                     ($isWindows && !in_array($doubleCheck, ["j", "ja", "y", "yes"])) || (!$isWindows && !$doubleCheck)
                 ) {
-                    echo "Bestand overgeslagen: $file\n";
+                    echo "$boldText Bestand overgeslagen: $file\n";
+                    echo "\n";
+                    sleep(1);
                     continue;
                 }
             }
             copy($srcPath, $destPath);
-            echo "Bestand gekopieerd: $file\n";
+            echo "$greenForeColor Bestand gekopieerd: $reset$file\n";
         }
         return true;
     }
