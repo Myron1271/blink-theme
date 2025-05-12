@@ -443,8 +443,6 @@ class ThemeInstall
             echo "\n";
         }
 
-
-
         echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
         echo("$boldText Installatie volledig afgerond!\n");
         echo "$greenBackColor" . str_repeat(" ", 80) . "$reset\n";
@@ -493,7 +491,7 @@ class ThemeInstall
             }
 
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
-                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie overschrijven met de opgehaalde versie?: $reset\n $destPath");
+                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n $destPath");
 
                 if ($isWindows) {
                     echo "Overschrijven? Ja/Nee: ";
@@ -505,7 +503,9 @@ class ThemeInstall
                 if (
                     ($isWindows && !in_array($overwrite, ["j", "ja", "y", "yes"])) || (!$isWindows && !$overwrite)
                 ) {
-                    echo "Bestand overgeslagen: $file\n";
+                    echo "$boldText Bestand overgeslagen: $file\n";
+                    echo "\n";
+                    sleep(1);
                     continue;
                 }
 
