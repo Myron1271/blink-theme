@@ -368,9 +368,10 @@ class ThemeInstall
         $isWindows = defined("PHP_OS_FAMILY") ? PHP_OS_FAMILY === "Windows" : strtoupper(substr(PHP_OS, 0, 3)) === "WIN";
 
         if ($isWindows) {
-            echo "Wil je een child theme aanmaken? Ja/Nee: ";
+            echo "$reset$boldText$cyanForeColor Wil je een child theme aanmaken?$reset Ja/Nee: ";
             $input = strtolower(trim(readline()));
             $createChild = in_array($input, ["j", "ja", "y", "yes"]);
+            echo "\n";
         } else {
             $createChild = confirm("$reset$boldText$cyanForeColor Wil je een child theme aanmaken?$reset", default: false, yes: "Ja", no: "Nee");
         }
@@ -380,24 +381,25 @@ class ThemeInstall
 
             do {
                 if ($isWindows) {
-                    echo "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset om te annuleren): $reset";
+                    echo "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset$boldText$cyanForeColor om over te slaan): $reset";
                     $siteName = trim(readline());
+                    echo "\n";
 
                     if (strtolower($siteName) === 'cancel') {
-                        info("$reset$redBackColor$boldText Aanmaak van het child theme geannuleerd!$reset");
+                        info("$reset$redBackColor$boldText Aanmaak van het child theme overgeslagen!$reset");
                         $siteName = null;
                         break;
                     }
                 } else {
                     $siteName = text(
-                        label: "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset$cyanForeColor om te stoppen): $reset",
+                        label: "$reset$boldText$cyanForeColor Wat is de naam van het Child Theme? (typ $boldText$yellowForeColor'cancel'$reset$cyanForeColor om over te slaan): $reset",
                         validate: function (string $value) {
                             return trim($value) !== "" ? null : "Voer een geldige naam in.";
                         }
                     );
 
                     if (strtolower($siteName) === 'cancel') {
-                        info("$reset$redBackColor$boldText Aanmaak van het child theme geannuleerd!$reset");
+                        info("$reset$redBackColor$boldText Aanmaak van het child theme overgeslagen!$reset");
                         $siteName = null;
                         break;
                     }
@@ -494,8 +496,9 @@ class ThemeInstall
                 warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n $destPath");
 
                 if ($isWindows) {
-                    echo "Overschrijven? Ja/Nee: ";
+                    echo "$yellowForeColor$boldText Overschrijven?$reset Ja/Nee: ";
                     $overwrite = strtolower(trim(readline()));
+                    echo "\n";
                 } else {
                     $overwrite = confirm("$yellowForeColor$boldText Overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
                 }
@@ -512,6 +515,7 @@ class ThemeInstall
                 if ($isWindows) {
                     echo "$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset Ja/Nee: ";
                     $doubleCheck = strtolower(trim(readline()));
+                    echo "\n";
                 } else {
                     $doubleCheck = confirm("$reset$redForeColor$boldText Weet je het echt zeker dat je '$file' wilt overschrijven?$reset", default: false, yes: "Ja", no: "Nee");
                 }
