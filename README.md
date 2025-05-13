@@ -93,11 +93,13 @@ Deze zijn:
     composer require eyetractive/blink-theme 
 
 Na het uitvoeren van dit commando wordt er een `vendor` map aangemaakt met daarin de Blink Composer package.
-Daarnaast wordt de package toegevoegd aan de `composer.json`, onder het kopje `require` met:.
+Daarnaast wordt de package toegevoegd aan de `composer.json`, onder het kopje `require` met:
 
+`
     "require": {
             "eyetractive/blink-theme": "^1.0"
-        },
+        },       
+`
 
 Tot slot hoeft nu alleen het script nog uitgevoerd te worden en is de installatie voltooid. Het commando daarvoor is:
 
