@@ -493,7 +493,7 @@ class ThemeInstall
             }
 
             if (file_exists($destPath) && md5_file($srcPath) !== md5_file($destPath)) {
-                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n $destPath");
+                warning("\n$reset$redBackColor$boldText Er is een bestand gevonden $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText die anders is dan de zojuist opgehaalde versie, Wil je jouw lokale versie $reset$yellowForeColor$boldText$italicText($file)$reset$redBackColor$boldText overschrijven met de opgehaalde versie?: $reset\n$cyanForeColor$boldText$italicText $destPath$reset");
 
                 if ($isWindows) {
                     echo "$yellowForeColor$boldText Overschrijven?$reset Ja/Nee: ";
